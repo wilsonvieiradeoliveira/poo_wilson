@@ -1,5 +1,0 @@
-print(22 * "=")
-print("Nome: Wilson Oliveira")
-print("Nick: willgamer")
-print("Jogo: DayZ")
-print(22 * "=")
