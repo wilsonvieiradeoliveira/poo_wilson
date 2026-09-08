@@ -38,6 +38,53 @@ def listar_personagens():
         posicao += 1
 
 
+def escolher_lutadores():
+    listar_personagens()
+    num1_texto = input("Número do 1º lutador: ").strip()
+    num2_texto = input("Número do 2º lutador: ").strip()
+
+    if not (num1_texto.isdigit() and num2_texto.isdigit()):
+        print("Digite apenas números da listagem.")
+        return None
+
+    num1, num2 = int(num1_texto), int(num2_texto)
+    if not (1 <= num1 <= len(personagens)) or not (1 <= num2 <= len(personagens)):
+        print("Número fora da lista.")
+        return None
+    if num1 == num2:
+        print("Escolha dois personagens diferentes.")
+        return None
+
+    return personagens[num1 - 1], personagens[num2 - 1]  # o famoso -1
+
+
+def batalha():
+    if len(personagens) < 2:
+        print("Crie pelo menos 2 personagens antes de batalhar.")
+        return
+
+    escolha = escolher_lutadores()
+    if escolha is None:
+        return
+    lutador1, lutador2 = escolha
+
+    print(f"\n=== {lutador1.nome} vs {lutador2.nome} ===")
+    while lutador1.esta_vivo() and lutador2.esta_vivo():
+        lutador1.atacar(lutador2)
+        print(f"{lutador1.nome} atacou {lutador2.nome}!")
+        if not lutador2.esta_vivo():
+            print(f"\n{lutador1.nome} venceu!")
+            break
+
+        lutador2.atacar(lutador1)
+        print(f"{lutador2.nome} atacou {lutador1.nome}!")
+        if not lutador1.esta_vivo():
+            print(f"\n{lutador2.nome} venceu!")
+            break
+
+        print(f"{lutador1.nome}: {max(0, lutador1.vida)} vida | {lutador2.nome}: {max(0, lutador2.vida)} vida\n")
+
+
 while True:
     opcao = input("1 Criar  2 Listar  3 Batalha  4 Sair: ").strip()
     if opcao == "1":
@@ -45,8 +92,7 @@ while True:
     elif opcao == "2":
         listar_personagens()
     elif opcao == "3":
-        if len(personagens) < 2:
-            print("Crie pelo menos 2 personagens antes de batalhar.")
+        batalha()
     elif opcao == "4":
         print("Até a próxima!")
         break
