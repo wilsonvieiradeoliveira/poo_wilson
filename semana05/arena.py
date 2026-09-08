@@ -18,6 +18,12 @@ class Personagem:
 personagens = []
 
 
+def barra_vida(vida, vida_maxima=100, tamanho=20):
+    vida_exibida = max(0, vida)
+    preenchido = int(tamanho * vida_exibida / vida_maxima)
+    return f"[{'#' * preenchido}{'-' * (tamanho - preenchido)}] {vida_exibida}/{vida_maxima}"
+
+
 def criar_personagem():
     nome = input("Nome do personagem: ").strip()
     ataque_texto = input("Ataque (Enter para usar o padrão 15): ").strip()
@@ -82,7 +88,8 @@ def batalha():
             print(f"\n{lutador2.nome} venceu!")
             break
 
-        print(f"{lutador1.nome}: {max(0, lutador1.vida)} vida | {lutador2.nome}: {max(0, lutador2.vida)} vida\n")
+        print(f"{lutador1.nome}: {barra_vida(lutador1.vida)}")
+        print(f"{lutador2.nome}: {barra_vida(lutador2.vida)}\n")
 
 
 while True:
