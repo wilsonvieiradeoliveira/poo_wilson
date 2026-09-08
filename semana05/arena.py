@@ -28,10 +28,27 @@ def criar_personagem():
     print(f"{nome} foi criado!")
 
 
+def listar_personagens():
+    if len(personagens) == 0:
+        print("Nenhum personagem criado ainda.")
+        return
+    posicao = 1
+    for p in personagens:
+        print(f"{posicao} - {p.nome} (vida: {max(0, p.vida)})")
+        posicao += 1
+
+
 while True:
     opcao = input("1 Criar  2 Listar  3 Batalha  4 Sair: ").strip()
     if opcao == "1":
         criar_personagem()
+    elif opcao == "2":
+        listar_personagens()
+    elif opcao == "3":
+        if len(personagens) < 2:
+            print("Crie pelo menos 2 personagens antes de batalhar.")
     elif opcao == "4":
         print("Até a próxima!")
         break
+    else:
+        print("Opção inválida. Escolha 1, 2, 3 ou 4.")
