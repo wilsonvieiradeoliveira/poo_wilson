@@ -49,15 +49,32 @@ class Produto:
     def exibir(self):
         print(f"{self.nome} | R$ {self.preco:.2f} | estoque: {self.estoque}")
 
+    def vender(self, qtd):
+        if qtd <= 0:
+            print(f"Quantidade inválida ({qtd}): a venda precisa ser de uma quantidade positiva.")
+            return False
+        if qtd > self.__estoque:
+            print(f"Estoque insuficiente para vender {qtd} de {self.nome} (disponível: {self.__estoque}).")
+            return False
+        self.__estoque -= qtd
+        print(f"Venda de {qtd} {self.nome} confirmada. Estoque restante: {self.__estoque}.")
+        return True
+
+    def repor(self, qtd):
+        if qtd <= 0:
+            print(f"Quantidade inválida ({qtd}): a reposição precisa ser de uma quantidade positiva.")
+            return
+        self.__estoque += qtd
+        print(f"Reposição de {qtd} {self.nome} confirmada. Estoque atual: {self.__estoque}.")
+
 
 produto = Produto("Caderno", 12.5, 10)
 produto.exibir()
 
-print("\nTeste de trapaça:")
-produto.preco = -10
-produto.estoque = -5
-Produto("Caneta inválida", -10)
-produto.exibir()
+print("\nTeste dos 4 cenários de vender()/repor():")
+produto.repor(5)      # repor válido
+produto.repor(-2)     # repor inválido
+produto.vender(3)     # vender válido
+produto.vender(999)   # vender sem estoque suficiente
 
-# TODO (aula 2): vender(qtd) e repor(qtd) com validação de quantidade e
-# estoque suficiente, cada recusa com sua própria mensagem.
+# TODO (aula 3): menu da lojinha (cadastrar, listar, vender, repor, sair).
