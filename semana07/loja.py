@@ -142,8 +142,15 @@ def repor_produto():
     produto.repor(int(qtd_texto))
 
 
+def valor_total_do_estoque():
+    total = 0
+    for produto in catalogo:
+        total += produto.preco * produto.estoque
+    return total
+
+
 while True:
-    opcao = input("1 Cadastrar  2 Listar  3 Vender  4 Repor  5 Sair: ").strip()
+    opcao = input("1 Cadastrar  2 Listar  3 Vender  4 Repor  5 Valor total  6 Sair: ").strip()
     if opcao == "1":
         cadastrar_produto()
     elif opcao == "2":
@@ -153,7 +160,9 @@ while True:
     elif opcao == "4":
         repor_produto()
     elif opcao == "5":
+        print(f"Valor total do estoque: R$ {valor_total_do_estoque():.2f}")
+    elif opcao == "6":
         print("Até a próxima!")
         break
     else:
-        print("Opção inválida. Escolha 1, 2, 3, 4 ou 5.")
+        print("Opção inválida. Escolha 1, 2, 3, 4, 5 ou 6.")
