@@ -68,13 +68,92 @@ class Produto:
         print(f"Reposição de {qtd} {self.nome} confirmada. Estoque atual: {self.__estoque}.")
 
 
-produto = Produto("Caderno", 12.5, 10)
-produto.exibir()
+catalogo = []
 
-print("\nTeste dos 4 cenários de vender()/repor():")
-produto.repor(5)      # repor válido
-produto.repor(-2)     # repor inválido
-produto.vender(3)     # vender válido
-produto.vender(999)   # vender sem estoque suficiente
 
-# TODO (aula 3): menu da lojinha (cadastrar, listar, vender, repor, sair).
+def cadastrar_produto():
+    nome = input("Nome do produto: ").strip()
+    preco_texto = input("Preço (use ponto para decimais, ex.: 4.50): ").strip()
+    try:
+        preco = float(preco_texto)
+    except ValueError:
+        print("Preço inválido. Digite um número usando ponto para decimais (ex.: 4.50).")
+        return
+
+    estoque_texto = input("Estoque inicial (Enter para 0): ").strip()
+    estoque = int(estoque_texto) if estoque_texto.isdigit() else 0
+
+    catalogo.append(Produto(nome, preco, estoque))
+    print(f"{nome} cadastrado!")
+
+
+def listar_catalogo():
+    if len(catalogo) == 0:
+        print("Catálogo vazio. Cadastre um produto primeiro.")
+        return
+    posicao = 1
+    for produto in catalogo:
+        print(f"{posicao} - ", end="")
+        produto.exibir()
+        posicao += 1
+
+
+def escolher_produto():
+    listar_catalogo()
+    if len(catalogo) == 0:
+        return None
+
+    num_texto = input("Número do produto: ").strip()
+    if not num_texto.isdigit():
+        print("Digite apenas o número da listagem.")
+        return None
+
+    num = int(num_texto)
+    if not (1 <= num <= len(catalogo)):
+        print("Número fora da lista.")
+        return None
+
+    return catalogo[num - 1]  # o -1 de sempre
+
+
+def vender_produto():
+    produto = escolher_produto()
+    if produto is None:
+        return
+
+    qtd_texto = input("Quantidade a vender: ").strip()
+    if not qtd_texto.isdigit():
+        print("Digite uma quantidade válida.")
+        return
+
+    produto.vender(int(qtd_texto))
+
+
+def repor_produto():
+    produto = escolher_produto()
+    if produto is None:
+        return
+
+    qtd_texto = input("Quantidade a repor: ").strip()
+    if not qtd_texto.isdigit():
+        print("Digite uma quantidade válida.")
+        return
+
+    produto.repor(int(qtd_texto))
+
+
+while True:
+    opcao = input("1 Cadastrar  2 Listar  3 Vender  4 Repor  5 Sair: ").strip()
+    if opcao == "1":
+        cadastrar_produto()
+    elif opcao == "2":
+        listar_catalogo()
+    elif opcao == "3":
+        vender_produto()
+    elif opcao == "4":
+        repor_produto()
+    elif opcao == "5":
+        print("Até a próxima!")
+        break
+    else:
+        print("Opção inválida. Escolha 1, 2, 3, 4 ou 5.")
